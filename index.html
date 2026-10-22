@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="2021 彰化公車網絡分析重製：探索 26 鄉鎮的中介中心性、特徵向量中心性與結構限制。">
+  <meta name="theme-color" content="#102d3b">
+  <title>彰化公車網絡圖譜 · 2021</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23102d3b'/%3E%3Cpath d='M12 34L24 12L36 29L12 34' stroke='%2347dab3' stroke-width='3' fill='none'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/leaflet.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/leaflet.js"></script>
+  <script defer src="assets/data.js"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#workspace" data-i18n="skip">跳至路網分析</a>
+  <header class="topbar">
+    <div class="brand"><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M7 27 18 7l12 17L7 27"/><circle cx="7" cy="27" r="3"/><circle cx="18" cy="7" r="3"/><circle cx="30" cy="24" r="3"/></svg><span>CHANGHUA<span class="brand-sub">TRANSIT ATLAS</span></span></div>
+    <div class="header-right"><span class="archive"><span></span><span data-i18n="archive">2021 研究典藏</span></span><button id="language" class="language" type="button" aria-label="Switch to English">EN <span aria-hidden="true">↗</span></button></div>
+  </header>
+  <main>
+    <section class="intro">
+      <div><p class="eyebrow" data-i18n="eyebrow">彰化縣 · 公車路網研究</p><h1 data-i18n="title">一張路網，26 個鄉鎮的連結。</h1><p class="subtitle" data-i18n="subtitle">從地方到整體，探索公車路線如何串起彰化。</p></div>
+      <div class="stats"><div><strong>26</strong><span data-i18n="townships">鄉鎮節點</span></div><div><strong id="edge-count">44</strong><span data-i18n="connections">網絡連結</span></div><div><strong>68</strong><span data-i18n="sequences">原始整理序列</span></div></div>
+    </section>
+    <section id="workspace" class="workspace" aria-label="Network explorer">
+      <div class="controls">
+        <div class="metric-picker" role="group" aria-label="Metric"><button type="button" class="metric active" data-metric="betweenness" aria-pressed="true"><span class="metric-number">01</span><span data-i18n="betweenness">中介中心性</span></button><button type="button" class="metric" data-metric="eigen" aria-pressed="false"><span class="metric-number">02</span><span data-i18n="eigen">特徵向量中心性</span></button><button type="button" class="metric" data-metric="constraint" aria-pressed="false"><span class="metric-number">03</span><span data-i18n="constraint">結構限制</span></button></div>
+        <div class="mode-picker"><label for="mode" data-i18n="network">網絡模式</label><select id="mode"><option value="original" data-i18n="original">既有路網 · 無加權</option><option value="weighted" data-i18n="weighted">既有路網 · 路線數加權</option><option value="full" data-i18n="full">假設補線 · 無加權</option></select></div>
+      </div>
+      <div class="explorer-grid">
+        <section class="map-panel" aria-label="Geographic network">
+          <div class="map-heading"><div><span class="live-dot"></span><span data-i18n="mapTitle">鄉鎮連結地圖</span></div><button id="reset-map" type="button" class="text-button"><span aria-hidden="true">⌖</span> <span data-i18n="reset">全縣視野</span></button></div>
+          <div class="map-wrap"><div id="map" role="region" aria-label="Changhua township network map"></div><div class="map-compass" aria-hidden="true"><span>N</span><span>↑</span></div><div class="map-caption"><span class="small-caps">CHANGHUA COUNTY</span><span data-i18n="mapCaption">2021 年 6 月 · 鄉鎮代表點連結</span></div><div class="map-legend"><span id="legend-title"></span><div class="color-scale"></div><div class="legend-range"><span id="legend-min">0</span><span id="legend-max"></span></div><div class="edge-key"><i></i><span id="edge-legend"></span></div><div class="edge-key scenario-key" hidden><i></i><span data-i18n="proposed">假設新增連結</span></div></div></div>
+          <div class="map-foot"><span data-i18n="mapHint">點選鄉鎮查看連結 · 滾輪縮放 · 拖曳移動</span><span class="offline-tag" data-i18n="offline">離線地圖</span></div>
+        </section>
+        <aside class="ranking-panel"><div class="ranking-heading"><div><p class="eyebrow" data-i18n="rankingEyebrow">NETWORK POSITION</p><h2 data-i18n="ranking">鄉鎮指標排名</h2></div><span class="count-badge">26</span></div><p id="metric-description" class="metric-description"></p><div class="rank-legend"><span><i class="current-key"></i><span id="rank-mode"></span></span><span id="baseline-key" hidden><i class="baseline-key"></i><span data-i18n="baseline">無加權基準</span></span></div><div id="ranking" class="ranking-list" aria-label="Township rankings"></div><p class="ranking-note" id="ranking-note"></p></aside>
+      </div>
+    </section>
+    <section class="detail-panel" aria-labelledby="detail-name">
+      <div class="town-summary"><p class="eyebrow" data-i18n="selected">鄉鎮觀察</p><div class="town-select-wrap"><h2 id="detail-name"></h2><label class="sr-only" for="town-select" data-i18n="chooseTown">選擇鄉鎮</label><select id="town-select"></select></div><p id="detail-en"></p><div class="town-facts"><span id="population"></span><span id="degree"></span></div></div>
+      <div class="comparison"><p class="section-label" data-i18n="comparison">同一鄉鎮，三種網絡</p><div id="comparison-bars"></div></div>
+      <div class="neighbors"><p class="section-label" data-i18n="neighbors">直接連結鄉鎮</p><div id="neighbors"></div><p class="micro" data-i18n="neighborNote">數字為原始 Freq 路線權重；＋為假設補線。</p></div>
+    </section>
+    <details class="methodology" id="methodology"><summary><span><span class="method-icon" aria-hidden="true">i</span><span data-i18n="methodTitle">關於資料與原版指標定義</span></span><span class="expand" aria-hidden="true">＋</span></summary><div class="method-content"><div><h3 data-i18n="sourcesTitle">保留 2021 年的研究基準</h3><p data-i18n="sourcesText">沿用原專案的 26 個節點、44 條無向連結、人口與代表點座標。Freq 由 68 筆人工整理的路線鄉鎮序列累計而來，代表路線連結次數，不是每日班次。人口資料年份為 2020 年。</p><p data-i18n="scenarioText">「假設補線」沿用原報告另外加入的 10 條連結，共 54 條邊；只進行無加權分析，不代表當年實際存在的公車服務。</p></div><div><h3 data-i18n="definitionTitle">算法沿用，解讀清楚</h3><p data-i18n="definitionText">中介中心性不做正規化；加權版本保留原作法，以 Freq 直接作為最短路徑成本。特徵向量中心性以最大值縮放為 1；Constraint 沿用 Burt 結構限制係數。所有數值由 R igraph 1.2.11 預先計算。</p><p class="method-warning" data-i18n="warning">注意：原版加權中介中心性會把較高的路線權重視為較高的成本。此次保留算法以重現歷史結果，不能解讀為班次或實際乘車可及性。</p></div><div><h3 data-i18n="mapMethodTitle">地圖閱讀方式</h3><p data-i18n="mapMethodText">色彩由淺至深表示當前指標由低至高，每次切換會重新縮放色階。線段連接原始鄉鎮代表點，不是實際公車行車軌跡。加權模式以線寬呈現 Freq；橘色虛線代表假設補線。</p><p data-i18n="snapshotText">站序資料來源：原專案保存之公共運輸整合資訊流通服務平台 JSON，更新日期 2021-06-20／21。重製未改動人工整理後的邊表。</p></div></div></details>
+    <footer><span>CHANGHUA TRANSIT ATLAS <span class="footer-year">/ 2021</span></span><span data-i18n="credit">原研究：劉恒 · 網絡分析期末專案</span></footer>
+  </main>
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+  <noscript><p class="noscript">此互動地圖需要啟用 JavaScript。Please enable JavaScript to view the network.</p></noscript>
+</body>
+</html>
