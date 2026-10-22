@@ -1,5 +1,9 @@
 # 2021 彰化公車網絡重製 / Changhua Transit Atlas
 
+**線上專案 / Live site:** https://heng1liu.github.io/changhua_bus_2021_network/
+
+**GitHub:** https://github.com/heng1liu/changhua_bus_2021_network
+
 直接開啟 `index.html` 即可使用。無須 R、Node.js、伺服器或網路連線。
 Open `index.html` directly. No R, Node.js, server, or internet connection is required.
 
